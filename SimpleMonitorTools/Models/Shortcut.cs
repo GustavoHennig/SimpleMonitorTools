@@ -15,6 +15,8 @@ namespace SimpleMonitorTools.Models
         [Required(ErrorMessage = "Target monitor is required.")]
         public string TargetMonitor { get; set; }
 
+        public bool RunOnStartup { get; set; } // Add RunOnStartup property
+
         public bool IsValid()
         {
             var context = new ValidationContext(this, null, null);

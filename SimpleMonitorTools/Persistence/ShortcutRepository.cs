@@ -58,6 +58,7 @@ namespace SimpleMonitorTools.Persistence
             {
                 // TODO: Log the error (Task 8)
                 Console.WriteLine($"Error saving shortcuts: {ex.Message}");
+                App.ShowNotification("Error", $"Failed to save shortcuts: {ex.Message}", Avalonia.Controls.Notifications.NotificationType.Error); // Show error notification
             }
         }
 

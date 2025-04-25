@@ -6,42 +6,75 @@
         mc:Ignorable="d"
         x:Class="SimpleMonitorTools.ShortcutManagerWindow"
         x:DataType="vm:ShortcutManagerViewModel"
-        Title="Manage Shortcuts">
+       x:Name="RootWindow"
+		Title="Manage Shortcuts"
+        Width="500" Height="400">
 
-    <Grid RowDefinitions="*,Auto">
-        <!-- Shortcuts list -->
-        <DataGrid Grid.Row="0"
-                  Margin="10"
-                  ItemsSource="{Binding Shortcuts}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name"
-                                    Binding="{Binding Name}"
-                                    Width="*" />
-                <DataGridTextColumn Header="Path"
-                                    Binding="{Binding ExecutablePath}"
-                                    Width="2*" />
-            </DataGrid.Columns>
-        </DataGrid>
+	<Grid RowDefinitions="*,Auto">
+		<!-- Shortcuts list -->
+		<Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="10">
+			<DataGrid x:Name="linksDataGrid"
+					  ItemsSource="{Binding Shortcuts}"
+					  AutoGenerateColumns="False"
+					  IsReadOnly="True">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name"
+										Binding="{Binding Name}"
+										Width="*" />
+					<DataGridTextColumn Header="Path"
+										Binding="{Binding ExecutablePath}"
+										Width="2*" />
+					<DataGridTextColumn Header="Monitor"
+										Binding="{Binding TargetMonitor}"
+										Width="*" />
+					<DataGridCheckBoxColumn Header="Startup"
+										Binding="{Binding RunOnStartup}"
+										  IsReadOnly="True"
+										  Width="Auto" />
+					<DataGridTemplateColumn Header="Actions">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Button Content="Remove"
+									  Command="{Binding #linksDataGrid.((vm:ShortcutManagerViewModel)DataContext).RemoveShortcutCommand}"
+									CommandParameter="{Binding .}" />
 
-        <!-- Add‑shortcut panel -->
-        <Grid Grid.Row="1"
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Border>
+		<!-- Add‑shortcut panel -->
+		<Grid Grid.Row="1"
               Margin="10"
-              ColumnDefinitions="Auto,*,Auto"
-              RowDefinitions="Auto,Auto">
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center"/>
-            <TextBox  Grid.Row="0" Grid.Column="1"
+              ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto"
+              DataContext="{Binding}">
+			<TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center"/>
+			<TextBox  Grid.Row="0" Grid.Column="1"
                       Text="{Binding NewShortcutName, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Path:" VerticalAlignment="Center"/>
-            <TextBox  Grid.Row="1" Grid.Column="1"
+			<TextBlock Grid.Row="1" Grid.Column="0" Text="Path:" VerticalAlignment="Center"/>
+			<TextBox  Grid.Row="1" Grid.Column="1"
                       Text="{Binding NewShortcutPath, UpdateSourceTrigger=PropertyChanged}" />
 
-            <Button   Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+			<TextBlock Grid.Row="0" Grid.Column="2" Text="Monitor:" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			<ComboBox Grid.Row="0" Grid.Column="3"
+                      ItemsSource="{Binding AvailableMonitors}"
+                      SelectedItem="{Binding SelectedMonitor}"
+                      VerticalAlignment="Center"
+                      Width="150"/>
+
+			<CheckBox Grid.Row="0" Grid.Column="4"
+                      Content="Run on startup"
+                      IsChecked="{Binding RunOnStartup}"
+                      VerticalAlignment="Center"
+                      Margin="10,0,0,0"/>
+
+			<Button   Grid.Row="0" Grid.RowSpan="2" Grid.Column="5"
                       Content="Add"
                       Command="{Binding AddShortcutCommand}"
                       VerticalAlignment="Center"/>
-        </Grid>
-    </Grid>
+		</Grid>
+	</Grid>
 </Window>
