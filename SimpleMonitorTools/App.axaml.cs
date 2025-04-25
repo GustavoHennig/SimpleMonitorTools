@@ -81,15 +81,22 @@ namespace SimpleMonitorTools
             menu.Add(new NativeMenuItemSeparator());
             menu.Add(new NativeMenuItem("Exit") { Command = new ExitApplicationCommand(life) });
 
-            _tray = new TrayIcon
+            if (_tray == null)
             {
-                // TODO: Add application icon
-                Icon = new WindowIcon(
-                            new Bitmap(AssetLoader.Open(
-                                new Uri("avares://SimpleMonitorTools/Assets/icon16-32-48.ico")))),
-                ToolTipText = "Simple Monitor Tool",
-                Menu = menu
-            };
+                _tray = new TrayIcon
+                {
+                    // TODO: Add application icon
+                    Icon = new WindowIcon(
+                                new Bitmap(AssetLoader.Open(
+                                    new Uri("avares://SimpleMonitorTools/Assets/icon16-32-48.ico")))),
+                    ToolTipText = "Simple Monitor Tool",
+                    Menu = menu
+                };
+            }
+            else
+            {
+                _tray.Menu = menu;
+            }
         }
 
 
