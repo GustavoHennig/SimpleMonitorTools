@@ -14,7 +14,7 @@ Immediate work on **Task 0, 1, 4, and 5**: bootstrapping, monitor enumeration, b
 
 ### Next Steps
 1. Continue implementing **Task 1: MonitorService** with P/Invoke and unit tests.
-2. Continue building **Task 4: ManageShortcutsWindow** (implement XAML UI and ViewModel).
+2. **Task 4: ManageShortcutsWindow** (XAML UI and ViewModel) is implemented.
 3. Continue wiring **Task 5: Wire tray menu** (implement the dynamic "Launch" submenu).
 4. Implement **Task 2: ShortcutRepository** (read/write JSON, create folder).
 5. Implement **Task 3: Design Shortcut model + validation helpers**.
