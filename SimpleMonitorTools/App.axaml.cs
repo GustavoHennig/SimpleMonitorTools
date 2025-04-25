@@ -56,39 +56,39 @@ namespace SimpleMonitorTools
         // Method to build the tray menu
         public void BuildTrayMenu(IClassicDesktopStyleApplicationLifetime life)
         {
-            var launchSubmenu = new NativeMenu();
+            var menu = new NativeMenu();
             var shortcuts = _shortcutRepository.LoadShortcuts();
 
             if (shortcuts.Count == 0)
             {
-                launchSubmenu.Add(new NativeMenuItem("No Shortcuts Available"));
+                menu.Add(new NativeMenuItem("No Shortcuts Available") { IsEnabled = false });
             }
             else
             {
                 foreach (var shortcut in shortcuts)
                 {
-                    launchSubmenu.Add(new NativeMenuItem(shortcut.Name)
+                    menu.Add(new NativeMenuItem(shortcut.Name)
                     {
                         Command = new LaunchShortcutCommand(_processLauncher, shortcut)
                     });
                 }
             }
 
+            menu.Add(new NativeMenuItemSeparator());
+
+            menu.Add(new NativeMenuItem("Manage Shortcuts...") { Command = new ShowManageShortcutsCommand(this) });
+            menu.Add(new NativeMenuItem("Reload Monitors") { Command = new ReloadMonitorsCommand() });
+            menu.Add(new NativeMenuItemSeparator());
+            menu.Add(new NativeMenuItem("Exit") { Command = new ExitApplicationCommand(life) });
+
             _tray = new TrayIcon
             {
                 // TODO: Add application icon
-                // Icon = new WindowIcon(
-                //            new Bitmap(AssetLoader.Open(
-                //                new Uri("avares://SimpleMonitorTools/Assets/monitor.ico")))),
+                Icon = new WindowIcon(
+                            new Bitmap(AssetLoader.Open(
+                                new Uri("avares://SimpleMonitorTools/Assets/icon16-32-48.ico")))),
                 ToolTipText = "Simple Monitor Tool",
-                Menu = new NativeMenu
-                {
-                    new NativeMenuItem("Launch") { Menu = launchSubmenu },
-                    new NativeMenuItem("Manage Shortcuts...") { Command = new ShowManageShortcutsCommand(this) }, // Pass App instance
-                    new NativeMenuItem("Reload Monitors") { Command = new ReloadMonitorsCommand() },
-                    new NativeMenuItemSeparator(),
-                    new NativeMenuItem("Exit") { Command = new ExitApplicationCommand(life) }
-                }
+                Menu = menu
             };
         }
 

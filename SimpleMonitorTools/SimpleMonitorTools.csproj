@@ -22,5 +22,9 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\icon16-32-48.ico" />
+  </ItemGroup>
+
 </Project>
