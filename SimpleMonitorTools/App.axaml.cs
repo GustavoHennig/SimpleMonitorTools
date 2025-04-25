@@ -76,7 +76,7 @@ namespace SimpleMonitorTools
 
             menu.Add(new NativeMenuItemSeparator());
 
-            menu.Add(new NativeMenuItem("Manage Shortcuts...") { Command = new ShowManageShortcutsCommand(this) });
+            menu.Add(new NativeMenuItem("Manage Shortcuts...") { Command = new ShowManageShortcutsCommand(this, _monitorService) });
             menu.Add(new NativeMenuItem("Reload Monitors") { Command = new ReloadMonitorsCommand() });
             menu.Add(new NativeMenuItemSeparator());
             menu.Add(new NativeMenuItem("Exit") { Command = new ExitApplicationCommand(life) });
@@ -110,18 +110,21 @@ namespace SimpleMonitorTools
         private class ShowManageShortcutsCommand : ICommand
         {
             private readonly App _app;
+            MonitorService _monitorService;
 
             public event EventHandler? CanExecuteChanged;
             public bool CanExecute(object? parameter) => true;
 
-            public ShowManageShortcutsCommand(App app)
+
+            public ShowManageShortcutsCommand(App app, MonitorService monitorService)
             {
                 _app = app;
+                _monitorService = monitorService;
             }
 
             public void Execute(object? parameter)
             {
-                var shortcutManagerWindow = new ShortcutManagerWindow();
+                var shortcutManagerWindow = new ShortcutManagerWindow(_monitorService);
                 shortcutManagerWindow.Closed += (sender, args) => // Handle window closed event
                 {
                     if (_app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime life)

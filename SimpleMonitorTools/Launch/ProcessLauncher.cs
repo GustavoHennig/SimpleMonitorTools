@@ -43,18 +43,18 @@ namespace SimpleMonitorTools.Launch
                 {
                     Console.WriteLine($"Launched process: {shortcut.ExecutablePath} on monitor: {shortcut.TargetMonitor}");
 
-                    // TODO: Implement more robust window handling logic (Task 6)
-                    // This is a basic attempt to find and position the window.
-                    // A more robust solution might involve waiting for the process's main window handle
-                    // or using UI Automation.
-                    Thread.Sleep(1000); // Give the process time to create a window
-
+                    // Wait for the process's main window handle to become available
                     IntPtr hWnd = IntPtr.Zero;
-                    // Attempt to find the window by title (may not work for all applications)
-                    // A better approach would be to get the process's main window handle if available.
-                    if (!string.IsNullOrEmpty(shortcut.Name))
+                    int attempts = 0;
+                    while (hWnd == IntPtr.Zero && attempts < 10) // Attempt to get handle for up to 10 seconds
                     {
-                         hWnd = FindWindow(null, shortcut.Name);
+                        process.Refresh(); // Refresh process information
+                        hWnd = process.MainWindowHandle;
+                        if (hWnd == IntPtr.Zero)
+                        {
+                            Thread.Sleep(1000); // Wait for 1 second before retrying
+                            attempts++;
+                        }
                     }
 
                     if (hWnd != IntPtr.Zero)
@@ -76,7 +76,7 @@ namespace SimpleMonitorTools.Launch
                     }
                     else
                     {
-                        Console.WriteLine($"Could not find window for process: {shortcut.ExecutablePath}");
+                        Console.WriteLine($"Could not find main window handle for process: {shortcut.ExecutablePath} after multiple attempts. Window not positioned.");
                         App.ShowNotification("Warning", $"Could not find window for process: {shortcut.ExecutablePath}. Window not positioned.", Avalonia.Controls.Notifications.NotificationType.Warning);
                     }
                 }

@@ -60,10 +60,10 @@ namespace SimpleMonitorTools
         public ReactiveCommand<Unit, Unit> AddShortcutCommand { get; }
         public ReactiveCommand<Models.Shortcut, Unit> RemoveShortcutCommand { get; } // Add RemoveShortcutCommand
 
-        public ShortcutManagerViewModel()
+        public ShortcutManagerViewModel(MonitorService monitorService)
         {
             _repository = new ShortcutRepository();
-            _monitorService = new MonitorService();
+            this._monitorService = monitorService;
 
             var loadedShortcuts = _repository.LoadShortcuts();
             Shortcuts = new ObservableCollection<Shortcut>();

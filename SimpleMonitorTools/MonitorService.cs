@@ -145,6 +145,11 @@ namespace SimpleMonitorTools
         // Method to get monitor info by friendly name (or device name as fallback)
         public MonitorInfo? GetMonitorInfoByIdentifier(string identifier)
         {
+
+            if(_monitorDetails.Count == 0)
+            {
+                GetConnectedMonitors();
+            }
             // Try to find by friendly name first
             var monitor = _monitorDetails.FirstOrDefault(m => m.FriendlyName.Equals(identifier, StringComparison.OrdinalIgnoreCase));
             if (monitor.HMonitor != IntPtr.Zero) return monitor;
