@@ -8,7 +8,7 @@
         x:DataType="vm:ShortcutManagerViewModel"
        x:Name="RootWindow"
 		Title="Manage Shortcuts"
-        Width="500" Height="400">
+        Width="800" Height="400">
 
 	<Grid RowDefinitions="*,Auto">
 		<!-- Shortcuts list -->
@@ -47,7 +47,7 @@
 		<!-- Add‑shortcut panel -->
 		<Grid Grid.Row="1"
               Margin="10"
-              ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto"
+              ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto"
               RowDefinitions="Auto,Auto"
               DataContext="{Binding}">
 			<TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center"/>
@@ -57,21 +57,22 @@
 			<TextBlock Grid.Row="1" Grid.Column="0" Text="Path:" VerticalAlignment="Center"/>
 			<TextBox  Grid.Row="1" Grid.Column="1"
                       Text="{Binding NewShortcutPath, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="..." VerticalAlignment="Center" Margin="5,0,0,0" Click="BrowseButton_Click"/>
 
-			<TextBlock Grid.Row="0" Grid.Column="2" Text="Monitor:" VerticalAlignment="Center" Margin="10,0,0,0"/>
-			<ComboBox Grid.Row="0" Grid.Column="3"
+			<TextBlock Grid.Row="0" Grid.Column="3" Text="Monitor:" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			<ComboBox Grid.Row="0" Grid.Column="4"
                       ItemsSource="{Binding AvailableMonitors}"
                       SelectedItem="{Binding SelectedMonitor}"
                       VerticalAlignment="Center"
                       Width="150"/>
 
-			<CheckBox Grid.Row="0" Grid.Column="4"
+			<CheckBox Grid.Row="0" Grid.Column="5"
                       Content="Run on startup"
                       IsChecked="{Binding RunOnStartup}"
                       VerticalAlignment="Center"
                       Margin="10,0,0,0"/>
 
-			<Button   Grid.Row="0" Grid.RowSpan="2" Grid.Column="5"
+			<Button   Grid.Row="0" Grid.RowSpan="2" Grid.Column="6"
                       Content="Add"
                       Command="{Binding AddShortcutCommand}"
                       VerticalAlignment="Center"/>
