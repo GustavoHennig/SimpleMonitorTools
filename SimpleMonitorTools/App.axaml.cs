@@ -48,6 +48,20 @@ namespace SimpleMonitorTools
 
                 TrayIcon.SetIcons(this, new TrayIcons { _tray }); // adds it
                 life.Exit += (_, _) => _tray?.Dispose();          // tidy-up
+
+                // Handle tray icon click to open the ShortcutManagerWindow
+                _tray.Clicked += (sender, args) =>
+                {
+                    var shortcutManagerWindow = new ShortcutManagerWindow(_monitorService);
+                    shortcutManagerWindow.Closed += (sender, args) => // Handle window closed event
+                    {
+                        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime life)
+                        {
+                            BuildTrayMenu(life); // Rebuild tray menu on close
+                        }
+                    };
+                    shortcutManagerWindow.Show();
+                };
             }
 
             base.OnFrameworkInitializationCompleted();
