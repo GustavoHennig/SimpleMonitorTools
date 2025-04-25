@@ -7,8 +7,8 @@
 | Language     | **C# 12**         | Latest LTS features. |
 | Win32 Access | `User32.dll` P/Invoke | Monitor enumeration & window movement. |
 | Data Store   | JSON via `System.Text.Json` | `%APPDATA%\SimpleMonitorTool`. |
-| DI           | `Microsoft.Extensions.Hosting` | Generic host for DI/logging. |
-| Logging      | Lightweight file logger | Only active in DEBUG builds. |
+| DI           | Out of scope |
+| Logging      | Print.Debut only | Only active in DEBUG builds. |
 | Build Tool   | `dotnet publish -c Release -p:PublishSingleFile=true` | Generates a single EXE. |
 
 **Constraints**

@@ -7,7 +7,7 @@
 | — | Task 1: MonitorService | 🟡 | P/Invoke skeleton written, unit tests TBD. |
 | — | Task 2: ShortcutRepository | 🔜 | JSON schema defined. |
 | — | Task 3: Design Shortcut model + validation helpers | 🔜 | Not started. |
-| — | Task 4: Build ManageShortcutsWindow (XAML + ViewModel) | 🟡 | Window created; UI and ViewModel TBD. |
+| — | Task 4: Build ManageShortcutsWindow (XAML + ViewModel) | ✅ | UI and ViewModel implemented. |
 | — | Task 5: Wire tray menu → Manage window, dynamic “Launch” submenu | 🟡 | "Manage Shortcuts" menu item wired; dynamic "Launch" submenu TBD. |
 | — | Task 6: Implement ProcessLauncher | 🔜 | Not started. |
 | — | Task 7: Glue: Add / remove shortcut flow, auto-save, update tray submenu | 🔜 | Not started. |
@@ -22,7 +22,6 @@
 * "Manage Shortcuts..." menu item in tray opens a window.
 
 ### What’s Left
-* Implement the UI and ViewModel for the Manage Shortcuts window.
 * Implement the dynamic "Launch" submenu in the tray icon's context menu.
 * Implement MonitorService (Task 1).
 * Implement ShortcutRepository (Task 2).

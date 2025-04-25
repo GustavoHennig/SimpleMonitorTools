@@ -2,11 +2,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+        xmlns:vm="clr-namespace:SimpleMonitorTools"
+        mc:Ignorable="d"
         x:Class="SimpleMonitorTools.ShortcutManagerWindow"
+        x:DataType="vm:ShortcutManagerViewModel"
         Title="Manage Shortcuts">
-    <StackPanel Margin="10">
-        <TextBlock Text="Shortcut Management Window" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <!-- Add controls for managing shortcuts here -->
-    </StackPanel>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Shortcuts list -->
+        <DataGrid Grid.Row="0"
+                  Margin="10"
+                  ItemsSource="{Binding Shortcuts}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Name}"
+                                    Width="*" />
+                <DataGridTextColumn Header="Path"
+                                    Binding="{Binding ExecutablePath}"
+                                    Width="2*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Add‑shortcut panel -->
+        <Grid Grid.Row="1"
+              Margin="10"
+              ColumnDefinitions="Auto,*,Auto"
+              RowDefinitions="Auto,Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" VerticalAlignment="Center"/>
+            <TextBox  Grid.Row="0" Grid.Column="1"
+                      Text="{Binding NewShortcutName, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Path:" VerticalAlignment="Center"/>
+            <TextBox  Grid.Row="1" Grid.Column="1"
+                      Text="{Binding NewShortcutPath, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button   Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                      Content="Add"
+                      Command="{Binding AddShortcutCommand}"
+                      VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
 </Window>
