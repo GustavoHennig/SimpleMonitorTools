@@ -8,15 +8,16 @@
         x:DataType="vm:ShortcutManagerViewModel"
        x:Name="RootWindow"
 		Title="Manage Shortcuts"
-        Width="800" Height="400">
+        Width="800" Height="450">
 
-	<Grid RowDefinitions="*,Auto">
+	<Grid RowDefinitions="*,Auto,Auto">
 		<!-- Shortcuts list -->
 		<Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="10">
 			<DataGrid x:Name="linksDataGrid"
 					  ItemsSource="{Binding Shortcuts}"
 					  AutoGenerateColumns="False"
-					  IsReadOnly="True">
+					  IsReadOnly="True"
+                      SelectedItem="{Binding SelectedShortcut}">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name"
 										Binding="{Binding Name}"
@@ -44,6 +45,7 @@
 				</DataGrid.Columns>
 			</DataGrid>
 		</Border>
+
 		<!-- Add‑shortcut panel -->
 		<Grid Grid.Row="1"
               Margin="10"

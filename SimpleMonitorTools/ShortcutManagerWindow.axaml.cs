@@ -15,7 +15,7 @@ namespace SimpleMonitorTools
         {
             InitializeComponent();
             DataContext = new ShortcutManagerViewModel(monitorService);
-            linksDataGrid.DoubleTapped += LinksDataGrid_DoubleTapped; // Subscribe to DoubleTapped event
+            // linksDataGrid.DoubleTapped += LinksDataGrid_DoubleTapped; // Removed DoubleTapped event subscription
             this._monitorService = monitorService;
         }
 
@@ -33,13 +33,6 @@ namespace SimpleMonitorTools
             }
         }
 
-        private void LinksDataGrid_DoubleTapped(object sender, TappedEventArgs e)
-        {
-            if (sender is DataGrid dataGrid && dataGrid.SelectedItem is Shortcut selectedShortcut)
-            {
-                var processLauncher = new ProcessLauncher(_monitorService); // Create ProcessLauncher instance
-                processLauncher.Launch(selectedShortcut); // Launch the shortcut
-            }
-        }
+        // Removed LinksDataGrid_DoubleTapped event handler
     }
 }
