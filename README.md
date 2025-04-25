@@ -1,21 +1,42 @@
-# SimpleMonitorTools
+# Simple Monitor Tool
 
-SimpleMonitorTools is a monitoring application that manages and launches shortcuts. It provides a user interface for managing shortcuts and a background service for monitoring.
+Simple Monitor Tool is a lightweight app that sits in your system tray and helps you organize how your programs open across multiple monitors.
 
-## Problem and Solution
+## What It Does
 
-For users with multiple monitors, ensuring applications open on a specific display can be a repetitive and frustrating task of manually dragging windows. SimpleMonitorTools solves this by allowing you to pre-assign any executable to a desired monitor. With a single click from the system tray, your application will launch and automatically appear on the correct screen. You can create and manage different shortcuts with their own monitor settings, providing a streamlined workflow for your multi-monitor setup.
+- **Create shortcuts** that open a program directly on the monitor you choose.
+- **One click** from the tray icon to launch programs exactly where you want.
+- **Save your setup** — even after restarting the PC, your shortcuts and monitor selections stay.
+- **Runs quietly** in the background without cluttering your taskbar.
+- **Works safely** without needing admin rights and saves settings in your user profile.
 
-**Features:**
-- Shortcut management
-- Process launching
-- Persistence using Windows Registry
+## Why Use It
 
-**Technology:**
+If you have multiple monitors, you know the pain: launching a program and manually dragging it to the correct screen every time.  
+Simple Monitor Tool makes it automatic — just click, and the app appears on the right monitor.
+
+## How It Works
+
+1. Add shortcuts using a simple window (opened from the tray).
+2. Pick which monitor each shortcut should use.
+3. Click the shortcut from the tray menu anytime you want to launch it.
+4. Done! No more dragging windows around.
+
+## Requirements
+
+- Windows 10 or 11
+- No installation needed — just run the app.
+
+## Technology
 - C#
 - Avalonia UI
 
-## Screenshots
+## Example
 
-![Tray Icon](screenshot-tray.png)
-![Settings Window](screenshot-settings.png)
+![Tray Icon](screenshot-tray.png)  
+![Manage Shortcuts Window](screenshot-settings.png)
+
+
+
+
+
