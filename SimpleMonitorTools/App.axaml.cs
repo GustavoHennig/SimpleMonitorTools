@@ -94,6 +94,16 @@ namespace SimpleMonitorTools
             menu.Add(new NativeMenuItem("Manage Shortcuts...") { Command = new ShowManageShortcutsCommand(this, _monitorService) });
             menu.Add(new NativeMenuItem("Reload Monitors") { Command = new ReloadMonitorsCommand() });
             menu.Add(new NativeMenuItemSeparator());
+
+            // Add Run at Startup checkable menu item (simulate checkmark)
+            bool runAtStartup = Persistence.RegistryHelper.IsRunOnStartupEnabled();
+            var runAtStartupLabel = (runAtStartup ? "✔ " : "") + "Run at Startup";
+            var runAtStartupItem = new NativeMenuItem(runAtStartupLabel)
+            {
+                Command = new ToggleRunOnStartupCommand(this, life)
+            };
+            menu.Add(runAtStartupItem);
+
             menu.Add(new NativeMenuItem("Exit") { Command = new ExitApplicationCommand(life) });
 
             if (_tray == null)
@@ -173,6 +183,37 @@ namespace SimpleMonitorTools
             public void Execute(object? parameter)
             {
                 _lifetime.Shutdown();
+            }
+        }
+
+        private class ToggleRunOnStartupCommand : ICommand
+        {
+            private readonly App _app;
+            private readonly IClassicDesktopStyleApplicationLifetime _lifetime;
+
+            public event EventHandler? CanExecuteChanged;
+            public ToggleRunOnStartupCommand(App app, IClassicDesktopStyleApplicationLifetime lifetime)
+            {
+                _app = app;
+                _lifetime = lifetime;
+            }
+            public bool CanExecute(object? parameter) => true;
+            public void Execute(object? parameter)
+            {
+                bool enabled = Persistence.RegistryHelper.IsRunOnStartupEnabled();
+                if (!enabled)
+                {
+                    // Enable: set with current process path
+                    var exePath = Environment.ProcessPath ?? System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+                    if (!string.IsNullOrEmpty(exePath))
+                        Persistence.RegistryHelper.SetRunOnStartup(true, exePath);
+                }
+                else
+                {
+                    // Disable: remove from registry
+                    Persistence.RegistryHelper.SetRunOnStartup(false);
+                }
+                _app.BuildTrayMenu(_lifetime); // Refresh menu to update check state
             }
         }
 

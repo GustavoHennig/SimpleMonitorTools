@@ -136,7 +136,7 @@ namespace SimpleMonitorTools
 
                     if (RunOnStartup)
                     {
-                        RegistryHelper.SetRunOnStartup(true, newShortcut.ExecutablePath);
+                        RegistryHelper.SetRunOnStartup(true, newShortcut.ExecutablePath, newShortcut.Name);
                     }
 
                     NewShortcutName = string.Empty;
@@ -170,7 +170,7 @@ namespace SimpleMonitorTools
                 {
                     if (shortcut.RunOnStartup)
                     {
-                        RegistryHelper.SetRunOnStartup(false);
+                        RegistryHelper.SetRunOnStartup(false, null, shortcut.Name);
                     }
 
                     Shortcuts.Remove(shortcut);
@@ -206,7 +206,7 @@ namespace SimpleMonitorTools
                             // Handle RunOnStartup change
                             if (SelectedShortcut.RunOnStartup != updatedShortcut.RunOnStartup)
                             {
-                                RegistryHelper.SetRunOnStartup(updatedShortcut.RunOnStartup, updatedShortcut.ExecutablePath);
+                                RegistryHelper.SetRunOnStartup(updatedShortcut.RunOnStartup, updatedShortcut.ExecutablePath, updatedShortcut.Name);
                             }
 
                             // Update the existing shortcut object in the ObservableCollection

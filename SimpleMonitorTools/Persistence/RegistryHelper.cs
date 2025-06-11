@@ -9,19 +9,20 @@ namespace SimpleMonitorTools.Persistence
         private const string RegistryRunPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private const string AppName = "SimpleMonitorTool";
 
-        public static void SetRunOnStartup(bool enable, string executablePath = null)
+        public static void SetRunOnStartup(bool enable, string executablePath = null, string registryKeyName = null)
         {
+            string keyName = registryKeyName ?? AppName;
             try
             {
                 using (var key = Registry.CurrentUser.OpenSubKey(RegistryRunPath, true))
                 {
                     if (enable && !string.IsNullOrEmpty(executablePath))
                     {
-                        key.SetValue(AppName, $"\"{executablePath}\"");
+                        key.SetValue(keyName, $"\"{executablePath}\"");
                     }
                     else
                     {
-                        key.DeleteValue(AppName, false);
+                        key.DeleteValue(keyName, false);
                     }
                 }
             }
@@ -32,13 +33,14 @@ namespace SimpleMonitorTools.Persistence
             }
         }
 
-        public static bool IsRunOnStartupEnabled()
+        public static bool IsRunOnStartupEnabled(string registryKeyName = null)
         {
+            string keyName = registryKeyName ?? AppName;
             try
             {
                 using (var key = Registry.CurrentUser.OpenSubKey(RegistryRunPath, false))
                 {
-                    return key.GetValue(AppName) != null;
+                    return key.GetValue(keyName) != null;
                 }
             }
             catch (Exception ex)
