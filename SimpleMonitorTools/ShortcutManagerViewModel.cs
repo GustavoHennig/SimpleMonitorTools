@@ -82,6 +82,9 @@ namespace SimpleMonitorTools
             AddShortcutCommand = ReactiveCommand.Create(AddShortcut);
             RemoveShortcutCommand = ReactiveCommand.Create<Models.Shortcut>(RemoveShortcut);
 
+
+
+
             // Subscribe to SelectedShortcut changes to populate NewShortcut fields
             this.WhenAnyValue(x => x.SelectedShortcut)
                 .Subscribe(selectedShortcut =>

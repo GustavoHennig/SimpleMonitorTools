@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading; // Required for Thread.Sleep
+using Avalonia.Threading;
 using SimpleMonitorTools.Models;
 
 namespace SimpleMonitorTools.Launch
@@ -17,15 +18,101 @@ namespace SimpleMonitorTools.Launch
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
+        [DllImport("user32.dll")]
+        static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        static extern bool EnumChildWindows(IntPtr hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+
+        [DllImport("user32.dll")]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+
+        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+
+
         // SetWindowPos flags
         private const uint SWP_NOSIZE = 0x0001;
         private const uint SWP_NOZORDER = 0x0004;
         private const uint SWP_SHOWWINDOW = 0x0040;
+        private const uint SWP_NOACTIVATE = 0x0010;
 
         public ProcessLauncher(MonitorService monitorService) // Constructor to receive MonitorService
         {
             _monitorService = monitorService;
         }
+
+
+        static IntPtr FindWindowByProcessId(int processId)
+        {
+            IntPtr foundHwnd = IntPtr.Zero;
+
+            EnumWindows((hWnd, lParam) =>
+            {
+                GetWindowThreadProcessId(hWnd, out uint windowProcessId);
+                if (windowProcessId == processId)
+                {
+                    foundHwnd = hWnd;
+                    return false; // Stop enumeration
+                }
+                return true; // Continue
+            }, IntPtr.Zero);
+
+            return foundHwnd;
+        }
+
+        static IntPtr FindApplicationFrameHostWindow(int uwpProcessId)
+        {
+            IntPtr foundHostHwnd = IntPtr.Zero;
+
+            EnumWindows((hWnd, lParam) =>
+            {
+                uint pid;
+                GetWindowThreadProcessId(hWnd, out pid);
+
+                // Only care about ApplicationFrameHost.exe windows
+                if (IsApplicationFrameHost(pid))
+                {
+                    // Search inside child windows
+                    EnumChildWindows(hWnd, (childHwnd, lParam2) =>
+                    {
+                        uint childPid;
+                        GetWindowThreadProcessId(childHwnd, out childPid);
+
+                        if (childPid == uwpProcessId)
+                        {
+                            foundHostHwnd = hWnd;
+                            return false; // Stop child search
+                        }
+
+                        return true; // Continue child search
+                    }, IntPtr.Zero);
+
+                    if (foundHostHwnd != IntPtr.Zero)
+                        return false; // Stop main window search
+                }
+
+                return true; // Continue enumerating top-level windows
+            }, IntPtr.Zero);
+
+            return foundHostHwnd;
+        }
+
+        static bool IsApplicationFrameHost(uint processId)
+        {
+            try
+            {
+                var proc = Process.GetProcessById((int)processId);
+                return proc.ProcessName.Equals("ApplicationFrameHost", StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         public void Launch(Shortcut shortcut)
         {
@@ -46,16 +133,26 @@ namespace SimpleMonitorTools.Launch
                     // Wait for the process's main window handle to become available
                     IntPtr hWnd = IntPtr.Zero;
                     int attempts = 0;
-                    while (hWnd == IntPtr.Zero && attempts < 10) // Attempt to get handle for up to 10 seconds
+                    while (hWnd == IntPtr.Zero && attempts < 50) // Attempt to get handle for up to 10 seconds
                     {
                         process.Refresh(); // Refresh process information
                         hWnd = process.MainWindowHandle;
                         if (hWnd == IntPtr.Zero)
                         {
-                            Thread.Sleep(1000); // Wait for 1 second before retrying
-                            attempts++;
+                            hWnd = FindApplicationFrameHostWindow(process.Id);
+                            if (hWnd == IntPtr.Zero)
+                            {
+
+                                Thread.Sleep(100); // Wait for 1 second before retrying
+                                Dispatcher.UIThread.RunJobs();
+                                attempts++;
+                            }
+
                         }
                     }
+
+
+
 
                     if (hWnd != IntPtr.Zero)
                     {
@@ -67,6 +164,25 @@ namespace SimpleMonitorTools.Launch
                             // Position the window at the top-left of the monitor's working area
                             SetWindowPos(hWnd, IntPtr.Zero, workArea.left, workArea.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_SHOWWINDOW);
                             Console.WriteLine($"Positioned window for {shortcut.Name} on monitor {shortcut.TargetMonitor}");
+
+
+                            new ExternalWinUiInteractor().InvokeControl(
+                                "spacedesk VIEWER",
+                                FlaUI.Core.Definitions.ControlType.TreeItem,
+                                @"^Connection: .+",
+                                SimpleMonitorTools.NameMatchMode.Regex
+                            );
+
+
+                            Thread.Sleep(3000);
+
+                            new ExternalWinUiInteractor().InvokeControl(
+                                "spacedesk VIEWER",
+                                FlaUI.Core.Definitions.ControlType.Button,
+                                @"Fullscreen",
+                                SimpleMonitorTools.NameMatchMode.Regex
+                            );
+
                         }
                         else
                         {

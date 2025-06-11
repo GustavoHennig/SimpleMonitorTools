@@ -83,6 +83,7 @@ namespace SimpleMonitorTools
                 {
                     menu.Add(new NativeMenuItem(shortcut.Name)
                     {
+                        
                         Command = new LaunchShortcutCommand(_processLauncher, shortcut)
                     });
                 }
@@ -192,7 +193,24 @@ namespace SimpleMonitorTools
 
             public void Execute(object? parameter)
             {
-                _processLauncher.Launch(_shortcut);
+
+                try
+                {
+
+                
+                //new ExternalWinUiInteractor().InvokeControl(
+                //             "spacedesk VIEWER",
+                //             FlaUI.Core.Definitions.ControlType.Button,
+                //             @"Fullscreen",
+                //             SimpleMonitorTools.NameMatchMode.Regex
+                //         );
+
+                    _processLauncher.Launch(_shortcut);
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
     }
