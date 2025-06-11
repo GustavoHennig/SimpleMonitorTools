@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using SimpleMonitorTools.Models;
 using SimpleMonitorTools.Launch;
+using System.Linq;
 
 namespace SimpleMonitorTools
 {
@@ -34,5 +35,20 @@ namespace SimpleMonitorTools
         }
 
         // Removed LinksDataGrid_DoubleTapped event handler
+
+        private async void EditStepsButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            if (DataContext is ShortcutManagerViewModel viewModel && viewModel.SelectedShortcut != null)
+            {
+                var editor = new PostLaunchStepEditorWindow(viewModel.SelectedShortcut.PostLaunchSteps);
+                await editor.ShowDialog(this);
+
+                // After closing, update the steps in the selected shortcut
+                if (editor.DataContext is PostLaunchStepEditorViewModel stepsVm)
+                {
+                    viewModel.SelectedShortcut.PostLaunchSteps = stepsVm.PostLaunchSteps?.ToList() ?? new System.Collections.Generic.List<PostLaunchStep>();
+                }
+            }
+        }
     }
 }

@@ -24,14 +24,10 @@ namespace SimpleMonitorTools.Launch
         [DllImport("user32.dll")]
         static extern bool EnumChildWindows(IntPtr hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
-
         [DllImport("user32.dll")]
         static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-
         private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
-
 
         // SetWindowPos flags
         private const uint SWP_NOSIZE = 0x0001;
@@ -43,7 +39,6 @@ namespace SimpleMonitorTools.Launch
         {
             _monitorService = monitorService;
         }
-
 
         static IntPtr FindWindowByProcessId(int processId)
         {
@@ -113,7 +108,6 @@ namespace SimpleMonitorTools.Launch
             }
         }
 
-
         public void Launch(Shortcut shortcut)
         {
             try
@@ -151,9 +145,6 @@ namespace SimpleMonitorTools.Launch
                         }
                     }
 
-
-
-
                     if (hWnd != IntPtr.Zero)
                     {
                         var monitorInfo = _monitorService.GetMonitorInfoByIdentifier(shortcut.TargetMonitor);
@@ -165,24 +156,30 @@ namespace SimpleMonitorTools.Launch
                             SetWindowPos(hWnd, IntPtr.Zero, workArea.left, workArea.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_SHOWWINDOW);
                             Console.WriteLine($"Positioned window for {shortcut.Name} on monitor {shortcut.TargetMonitor}");
 
+                            // Execute post-launch steps
+                            if (shortcut.PostLaunchSteps != null)
+                            {
+                                foreach (var step in shortcut.PostLaunchSteps)
+                                {
+                                    if (step.StepType == PostLaunchStepType.InvokeControl)
+                                    {
+                                        // Parse ControlType and NameMatchMode from string to enum
+                                        var controlType = (FlaUI.Core.Definitions.ControlType)Enum.Parse(typeof(FlaUI.Core.Definitions.ControlType), step.ControlType);
+                                        var matchMode = (SimpleMonitorTools.NameMatchMode)Enum.Parse(typeof(SimpleMonitorTools.NameMatchMode), step.NameMatchMode);
 
-                            new ExternalWinUiInteractor().InvokeControl(
-                                "spacedesk VIEWER",
-                                FlaUI.Core.Definitions.ControlType.TreeItem,
-                                @"^Connection: .+",
-                                SimpleMonitorTools.NameMatchMode.Regex
-                            );
-
-
-                            Thread.Sleep(3000);
-
-                            new ExternalWinUiInteractor().InvokeControl(
-                                "spacedesk VIEWER",
-                                FlaUI.Core.Definitions.ControlType.Button,
-                                @"Fullscreen",
-                                SimpleMonitorTools.NameMatchMode.Regex
-                            );
-
+                                        new ExternalWinUiInteractor().InvokeControl(
+                                            step.WindowTitle,
+                                            controlType,
+                                            step.Name,
+                                            matchMode
+                                        );
+                                    }
+                                    else if (step.StepType == PostLaunchStepType.Sleep)
+                                    {
+                                        Thread.Sleep(step.DurationMs);
+                                    }
+                                }
+                            }
                         }
                         else
                         {

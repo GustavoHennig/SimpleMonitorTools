@@ -54,6 +54,13 @@ namespace SimpleMonitorTools.Models
             return true;
         }
 
+        private List<PostLaunchStep> _postLaunchSteps = new List<PostLaunchStep>();
+        public List<PostLaunchStep> PostLaunchSteps
+        {
+            get => _postLaunchSteps;
+            set => SetProperty(ref _postLaunchSteps, value);
+        }
+
         public bool IsValid()
         {
             var context = new ValidationContext(this, null, null);

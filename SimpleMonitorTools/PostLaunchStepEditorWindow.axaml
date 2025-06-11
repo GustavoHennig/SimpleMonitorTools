@@ -1,0 +1,72 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleMonitorTools"
+        mc:Ignorable="d"
+        x:Class="SimpleMonitorTools.PostLaunchStepEditorWindow"
+        x:DataType="local:PostLaunchStepEditorViewModel"
+        Title="Edit Post-Launch Steps"
+        Width="700" Height="400">
+    <Grid RowDefinitions="*,Auto,Auto">
+        <!-- Steps list -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="10">
+            <DataGrid x:Name="stepsDataGrid"
+                      ItemsSource="{Binding PostLaunchSteps}"
+                      AutoGenerateColumns="False"
+                      SelectedItem="{Binding SelectedStep}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Type" Binding="{Binding StepType}" Width="*" />
+                    <DataGridTextColumn Header="Window Title" Binding="{Binding WindowTitle}" Width="2*" />
+                    <DataGridTextColumn Header="Control Type" Binding="{Binding ControlType}" Width="*" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                    <DataGridTextColumn Header="Match Mode" Binding="{Binding NameMatchMode}" Width="*" />
+                    <DataGridTextColumn Header="Duration (ms)" Binding="{Binding DurationMs}" Width="*" />
+                    <DataGridTemplateColumn Header="Actions">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+								<Button Content="Remove"
+                                        Command="{Binding #stepsDataGrid.((local:PostLaunchStepEditorViewModel)DataContext).RemoveStepCommand}"
+                                        CommandParameter="{Binding .}" />
+
+							</DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- Add-step panel -->
+        <Grid Grid.Row="1"
+              Margin="10"
+              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*,Auto,*,Auto"
+              RowDefinitions="Auto">
+            <TextBlock Grid.Column="0" Text="Type:" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding StepTypes}"
+                      SelectedItem="{Binding NewStepType}"
+                      Width="120" />
+
+            <TextBlock Grid.Column="2" Text="Window Title:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="3" Text="{Binding NewWindowTitle, UpdateSourceTrigger=PropertyChanged}" Width="120" />
+
+            <TextBlock Grid.Column="4" Text="Control Type:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="5" Text="{Binding NewControlType, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+
+            <TextBlock Grid.Column="6" Text="Name:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="7" Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+
+            <TextBlock Grid.Column="8" Text="Match Mode:" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="9" Text="{Binding NewNameMatchMode, UpdateSourceTrigger=PropertyChanged}" Width="80" />
+
+            <TextBlock Grid.Column="10" Text="Duration (ms):" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="11" Text="{Binding NewDurationMs, UpdateSourceTrigger=PropertyChanged}" Width="80" />
+
+            <Button Grid.Column="12"
+                    Content="Add"
+                    Command="{Binding AddStepCommand}"
+                    VerticalAlignment="Center"
+                    Margin="10,0,0,0"/>
+        </Grid>
+    </Grid>
+</Window>

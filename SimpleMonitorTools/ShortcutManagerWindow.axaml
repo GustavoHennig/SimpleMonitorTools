@@ -33,15 +33,19 @@
 										  IsReadOnly="True"
 										  Width="Auto" />
 					<DataGridTemplateColumn Header="Actions">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<Button Content="Remove"
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal" Spacing="5">
+									<Button Content="Remove"
 									  Command="{Binding #linksDataGrid.((vm:ShortcutManagerViewModel)DataContext).RemoveShortcutCommand}"
-									CommandParameter="{Binding .}" />
+									  CommandParameter="{Binding .}" />
 
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
+									<Button Content="Edit Steps"
+									Click="EditStepsButton_Click"/>
+								</StackPanel>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 				</DataGrid.Columns>
 			</DataGrid>
 		</Border>
@@ -59,7 +63,7 @@
 			<TextBlock Grid.Row="1" Grid.Column="0" Text="Path:" VerticalAlignment="Center"/>
 			<TextBox  Grid.Row="1" Grid.Column="1"
                       Text="{Binding NewShortcutPath, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Grid.Row="1" Grid.Column="2" Content="..." VerticalAlignment="Center" Margin="5,0,0,0" Click="BrowseButton_Click"/>
+			<Button Grid.Row="1" Grid.Column="2" Content="..." VerticalAlignment="Center" Margin="5,0,0,0" Click="BrowseButton_Click"/>
 
 			<TextBlock Grid.Row="0" Grid.Column="3" Text="Monitor:" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			<ComboBox Grid.Row="0" Grid.Column="4"
