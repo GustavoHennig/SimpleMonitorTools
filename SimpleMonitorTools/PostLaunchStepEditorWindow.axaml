@@ -7,66 +7,81 @@
         x:Class="SimpleMonitorTools.PostLaunchStepEditorWindow"
         x:DataType="local:PostLaunchStepEditorViewModel"
         Title="Edit Post-Launch Steps"
-        Width="700" Height="400">
-    <Grid RowDefinitions="*,Auto,Auto">
-        <!-- Steps list -->
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="10">
-            <DataGrid x:Name="stepsDataGrid"
+        Width="900" Height="400">
+	<Grid RowDefinitions="*,Auto,Auto">
+		<!-- Steps list -->
+		<Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="10">
+			<DataGrid x:Name="stepsDataGrid"
                       ItemsSource="{Binding PostLaunchSteps}"
                       AutoGenerateColumns="False"
                       SelectedItem="{Binding SelectedStep}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" Binding="{Binding StepType}" Width="*" />
-                    <DataGridTextColumn Header="Window Title" Binding="{Binding WindowTitle}" Width="2*" />
-                    <DataGridTextColumn Header="Control Type" Binding="{Binding ControlType}" Width="*" />
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                    <DataGridTextColumn Header="Match Mode" Binding="{Binding NameMatchMode}" Width="*" />
-                    <DataGridTextColumn Header="Duration (ms)" Binding="{Binding DurationMs}" Width="*" />
-                    <DataGridTemplateColumn Header="Actions">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Type" Binding="{Binding StepType}" Width="*" />
+					<DataGridTextColumn Header="Window Title" Binding="{Binding WindowTitle}" Width="2*" />
+					<DataGridTextColumn Header="Control Type" Binding="{Binding ControlType}" Width="*" />
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+					<DataGridTextColumn Header="Match Mode" Binding="{Binding NameMatchMode}" Width="*" />
+					<DataGridTextColumn Header="Duration (ms)" Binding="{Binding DurationMs}" Width="*" />
+					<DataGridTemplateColumn Header="Actions">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
 								<Button Content="Remove"
                                         Command="{Binding #stepsDataGrid.((local:PostLaunchStepEditorViewModel)DataContext).RemoveStepCommand}"
                                         CommandParameter="{Binding .}" />
 
 							</DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Border>
 
-        <!-- Add-step panel -->
-        <Grid Grid.Row="1"
+		<!-- Add-step panel -->
+		<Grid Grid.Row="1"
               Margin="10"
-              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*,Auto,*,Auto"
+              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*,Auto,*,Auto,*,Auto"
               RowDefinitions="Auto">
-            <TextBlock Grid.Column="0" Text="Type:" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1"
+			<TextBlock Grid.Column="0" Text="Type:" VerticalAlignment="Center"/>
+			<ComboBox Grid.Column="1"
                       ItemsSource="{Binding StepTypes}"
                       SelectedItem="{Binding NewStepType}"
-                      Width="120" />
+					  HorizontalAlignment="Stretch"
+                       />
 
-            <TextBlock Grid.Column="2" Text="Window Title:" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="3" Text="{Binding NewWindowTitle, UpdateSourceTrigger=PropertyChanged}" Width="120" />
+			<TextBlock Grid.Column="2" Text="Window Title:" VerticalAlignment="Center"/>
+			<TextBox Grid.Column="3" Text="{Binding NewWindowTitle, UpdateSourceTrigger=PropertyChanged}" 
+					  HorizontalAlignment="Stretch"
+					 />
 
-            <TextBlock Grid.Column="4" Text="Control Type:" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="5" Text="{Binding NewControlType, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+			<TextBlock Grid.Column="4" Text="Control Type:" VerticalAlignment="Center"/>
+			<ComboBox Grid.Column="5"
+					  ItemsSource="{Binding ControlTypes}"
+					  SelectedItem="{Binding NewControlType}"
+					  					  HorizontalAlignment="Stretch"
+ />
 
-            <TextBlock Grid.Column="6" Text="Name:" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="7" Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+			<TextBlock Grid.Column="6" Text="Name:" VerticalAlignment="Center"/>
+			<TextBox Grid.Column="7" Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
+					  HorizontalAlignment="Stretch"
+					 />
 
-            <TextBlock Grid.Column="8" Text="Match Mode:" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="9" Text="{Binding NewNameMatchMode, UpdateSourceTrigger=PropertyChanged}" Width="80" />
+			<TextBlock Grid.Column="8" Text="Match Mode:" VerticalAlignment="Center"/>
+			<ComboBox Grid.Column="9"
+					  ItemsSource="{Binding NameMatchModes}"
+					  SelectedItem="{Binding NewNameMatchMode}"
+					 					  HorizontalAlignment="Stretch"
+ />
 
-            <TextBlock Grid.Column="10" Text="Duration (ms):" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="11" Text="{Binding NewDurationMs, UpdateSourceTrigger=PropertyChanged}" Width="80" />
+			<TextBlock Grid.Column="10" Text="Duration (ms):" VerticalAlignment="Center"/>
+			<TextBox Grid.Column="11" Text="{Binding NewDurationMs, UpdateSourceTrigger=PropertyChanged}" 
+					  HorizontalAlignment="Stretch"
+					 />
 
-            <Button Grid.Column="12"
+			<Button Grid.Column="12"
                     Content="Add"
                     Command="{Binding AddStepCommand}"
                     VerticalAlignment="Center"
                     Margin="10,0,0,0"/>
-        </Grid>
-    </Grid>
+		</Grid>
+	</Grid>
 </Window>

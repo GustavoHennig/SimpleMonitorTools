@@ -27,6 +27,9 @@ namespace SimpleMonitorTools
 
         public List<PostLaunchStepType> StepTypes { get; } = Enum.GetValues(typeof(PostLaunchStepType)).Cast<PostLaunchStepType>().ToList();
 
+        public List<string> ControlTypes { get; }
+        public List<string> NameMatchModes { get; }
+
         // New step fields
         private PostLaunchStepType _newStepType;
         public PostLaunchStepType NewStepType
@@ -73,7 +76,12 @@ namespace SimpleMonitorTools
         public ReactiveCommand<Unit, Unit> AddStepCommand { get; }
         public ReactiveCommand<PostLaunchStep, Unit> RemoveStepCommand { get; }
 
-        public PostLaunchStepEditorViewModel(IEnumerable<PostLaunchStep> steps = null)
+        public PostLaunchStepEditorViewModel()
+            : this(null)
+        {
+        }
+
+        public PostLaunchStepEditorViewModel(IEnumerable<PostLaunchStep> steps)
         {
             PostLaunchSteps = steps != null
                 ? new ObservableCollection<PostLaunchStep>(steps)
@@ -81,6 +89,12 @@ namespace SimpleMonitorTools
 
             AddStepCommand = ReactiveCommand.Create(AddStep);
             RemoveStepCommand = ReactiveCommand.Create<PostLaunchStep>(RemoveStep);
+
+            // Populate ControlTypes from FlaUI.Core.Definitions.ControlType enum
+            ControlTypes = Enum.GetNames(typeof(FlaUI.Core.Definitions.ControlType)).ToList();
+
+            // Populate NameMatchModes from SimpleMonitorTools.NameMatchMode enum
+            NameMatchModes = Enum.GetNames(typeof(SimpleMonitorTools.NameMatchMode)).ToList();
 
             NewStepType = StepTypes.FirstOrDefault();
         }
