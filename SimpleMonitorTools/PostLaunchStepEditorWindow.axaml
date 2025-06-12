@@ -36,52 +36,68 @@
 			</DataGrid>
 		</Border>
 
-		<!-- Add-step panel -->
-		<Grid Grid.Row="1"
-              Margin="10"
-              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*,Auto,*,Auto,*,Auto"
-              RowDefinitions="Auto">
-			<TextBlock Grid.Column="0" Text="Type:" VerticalAlignment="Center"/>
-			<ComboBox Grid.Column="1"
-                      ItemsSource="{Binding StepTypes}"
-                      SelectedItem="{Binding NewStepType}"
-					  HorizontalAlignment="Stretch"
-                       />
+<!-- Add-step panel -->
+<Grid Grid.Row="1"
+      Margin="10"
+      ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto"
+	  HorizontalAlignment="Stretch"
+      RowDefinitions="Auto,Auto">
 
-			<TextBlock Grid.Column="2" Text="Window Title:" VerticalAlignment="Center"/>
-			<TextBox Grid.Column="3" Text="{Binding NewWindowTitle, UpdateSourceTrigger=PropertyChanged}" 
-					  HorizontalAlignment="Stretch"
-					 />
+  <!-- Row 0 -->
+  <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" VerticalAlignment="Center"/>
+  <ComboBox Grid.Row="0" Grid.Column="1"
+            ItemsSource="{Binding StepTypes}"
+            SelectedItem="{Binding NewStepType}"
+            HorizontalAlignment="Stretch"/>
 
-			<TextBlock Grid.Column="4" Text="Control Type:" VerticalAlignment="Center"/>
-			<ComboBox Grid.Column="5"
-					  ItemsSource="{Binding ControlTypes}"
-					  SelectedItem="{Binding NewControlType}"
-					  					  HorizontalAlignment="Stretch"
- />
+  <TextBlock Grid.Row="0" Grid.Column="2" Text="Window Title:" VerticalAlignment="Center"/>
+  <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding NewWindowTitle, UpdateSourceTrigger=PropertyChanged}" 
+           HorizontalAlignment="Stretch"/>
 
-			<TextBlock Grid.Column="6" Text="Name:" VerticalAlignment="Center"/>
-			<TextBox Grid.Column="7" Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
-					  HorizontalAlignment="Stretch"
-					 />
+  <TextBlock Grid.Row="0" Grid.Column="4" Text="Control Type:" VerticalAlignment="Center"/>
+  <ComboBox Grid.Row="0" Grid.Column="5"
+            ItemsSource="{Binding ControlTypes}"
+            SelectedItem="{Binding NewControlType}"
+            HorizontalAlignment="Stretch"/>
 
-			<TextBlock Grid.Column="8" Text="Match Mode:" VerticalAlignment="Center"/>
-			<ComboBox Grid.Column="9"
-					  ItemsSource="{Binding NameMatchModes}"
-					  SelectedItem="{Binding NewNameMatchMode}"
-					 					  HorizontalAlignment="Stretch"
- />
+  <!-- Row 0 -->
+  <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" VerticalAlignment="Center"/>
+  <ComboBox Grid.Row="0" Grid.Column="1"
+            ItemsSource="{Binding StepTypes}"
+            SelectedItem="{Binding NewStepType}"
+            HorizontalAlignment="Stretch"/>
 
-			<TextBlock Grid.Column="10" Text="Duration (ms):" VerticalAlignment="Center"/>
-			<TextBox Grid.Column="11" Text="{Binding NewDurationMs, UpdateSourceTrigger=PropertyChanged}" 
-					  HorizontalAlignment="Stretch"
-					 />
+  <TextBlock Grid.Row="0" Grid.Column="2" Text="Window Title:" VerticalAlignment="Center"/>
+  <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding NewWindowTitle, UpdateSourceTrigger=PropertyChanged}" 
+           HorizontalAlignment="Stretch"/>
 
-			<Button Grid.Column="12"
-                    Content="Add"
-                    Command="{Binding AddStepCommand}"
-                    VerticalAlignment="Center"
-                    Margin="10,0,0,0"/>
-		</Grid>
+  <TextBlock Grid.Row="0" Grid.Column="4" Text="Control Type:" VerticalAlignment="Center"/>
+  <ComboBox Grid.Row="0" Grid.Column="5"
+            ItemsSource="{Binding ControlTypes}"
+            SelectedItem="{Binding NewControlType}"
+            HorizontalAlignment="Stretch"/>
+
+  <!-- Row 1 -->
+  <TextBlock Grid.Row="1" Grid.Column="0" Text="Match Mode:" VerticalAlignment="Center"/>
+  <ComboBox Grid.Row="1" Grid.Column="1"
+            ItemsSource="{Binding NameMatchModes}"
+            SelectedItem="{Binding NewNameMatchMode}"
+            HorizontalAlignment="Stretch"/>
+
+  <TextBlock Grid.Row="1" Grid.Column="2" Text="Duration (ms):" VerticalAlignment="Center"/>
+  <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding NewDurationMs, UpdateSourceTrigger=PropertyChanged}" 
+           HorizontalAlignment="Stretch"/>
+
+  <TextBlock Grid.Row="1" Grid.Column="4" Text="Name:" VerticalAlignment="Center"/>
+  <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
+           HorizontalAlignment="Stretch"/>
+
+  <Button Grid.Row="1" Grid.Column="6"
+          Content="Add"
+          Command="{Binding AddStepCommand}"
+          VerticalAlignment="Center"
+          Margin="10,0,0,0"
+          HorizontalAlignment="Right"/>
+</Grid>
 	</Grid>
 </Window>
